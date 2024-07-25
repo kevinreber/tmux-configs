@@ -12,8 +12,9 @@ I rarely use my `Caps Locks` button for what it's originally intended for so I'v
 ## My keybindings
 
 `tmux.conf`
-```conf
-# Instead of the prefix default Ctrl+b, set prefix to be Ctrl+a – Why do this? My Caps Lock button is set to also be Ctrl, so I feel this is more ergonomically comfortable
+```bash
+# Instead of the prefix default Ctrl+b, set prefix to be Ctrl+a
+# Why do this? My Caps Lock button is set to also be Ctrl, so I feel this is more ergonomically comfortable
 set -g prefix C-a
 
 # Enable interactive mouse
@@ -21,28 +22,30 @@ set -g mouse on
 
 # Byobu-like tmux configuration below
 
+# I use a theme for styling, so I don't use the Byobu default styling 😄 ############################################
 # General Settings
-set -g default-terminal "screen-256color"
-set -g history-limit 10000
-set -g base-index 1
-setw -g pane-base-index 1
-set -g renumber-windows on
-set -s escape-time 0
+# set -g default-terminal "screen-256color"
+# set -g history-limit 10000
+# set -g base-index 1
+# setw -g pane-base-index 1
+# set -g renumber-windows on
+# set -s escape-time 0
 
 # Status Bar Settings
-set -g status-bg colour234
-set -g status-fg white
-set -g status-interval 5
-set -g status-left-length 32
-set -g status-right-length 150
-set -g status-left '#[fg=colour16,bg=colour254,bold] #S #[fg=colour254,bg=colour238,nobold]#[fg=colour238,bg=colour234,nobold]#[fg=colour143,bg=colour018,nobold] #h |'
-set -g status-right '#[fg=colour16,bg=colour254,bold] %R #[fg=colour245] %d %b #[fg=colour16,bg=colour254,bold] #h '
-set -g window-status-format "#[fg=white,bg=colour234] #I #W "
-set -g window-status-current-format "#[fg=colour234,bg=colour39]#[fg=colour16,bg=colour39,noreverse,bold] #I ❭ #W #[fg=colour39,bg=colour234,nobold]"
+# set -g status-bg colour234
+# set -g status-fg white
+# set -g status-interval 5
+# set -g status-left-length 32
+# set -g status-right-length 150
+# set -g status-left '#[fg=colour16,bg=colour254,bold] #S #[fg=colour254,bg=colour238,nobold]#[fg=colour238,bg=colour234,nobold]#[fg=colour143,bg=colour018,nobold] #h |'
+# set -g status-right '#[fg=colour16,bg=colour254,bold] %R #[fg=colour245] %d %b #[fg=colour16,bg=colour254,bold] #h '
+# set -g window-status-format "#[fg=white,bg=colour234] #I #W "
+# set -g window-status-current-format "#[fg=colour234,bg=colour39]#[fg=colour16,bg=colour39,noreverse,bold] #I ❭ #W #[fg=colour39,bg=colour234,nobold]"
 
 # Pane Borders
-set-option -g pane-active-border-style "bg=black,fg=green"
-set-option -g pane-border-style "bg=default,fg=white"
+# set-option -g pane-active-border-style "bg=black,fg=green"
+# set-option -g pane-border-style "bg=default,fg=white"
+# End of Byobu default styling ############################################
 
 # Activity Monitoring
 set-option -g visual-activity on
@@ -112,7 +115,36 @@ bind-key -n F10 split-window -v
 bind-key -n F11 split-window -h
 bind-key -n F12 select-layout even-horizontal
 
+# Tmux Plugin Manager ##############################
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+# Tmux nerd font window name: https://github.com/joshmedeski/tmux-nerd-font-window-name
+set -g @plugin 'joshmedeski/tmux-nerd-font-window-name'
+# Catpuccin Tmux theme: https://github.com/catppuccin/tmux
+set -g @plugin 'catppuccin/tmux'
 
+# Catpuccin settings - Config 3
+set -g @catppuccin_window_left_separator ""
+set -g @catppuccin_window_right_separator " "
+set -g @catppuccin_window_middle_separator " █"
+set -g @catppuccin_window_number_position "right"
+
+set -g @catppuccin_window_default_fill "number"
+set -g @catppuccin_window_default_text "#W"
+
+set -g @catppuccin_window_current_fill "number"
+set -g @catppuccin_window_current_text "#W"
+
+set -g @catppuccin_status_modules_right "directory session"
+set -g @catppuccin_status_left_separator  " "
+set -g @catppuccin_status_right_separator ""
+set -g @catppuccin_status_fill "icon"
+set -g @catppuccin_status_connect_separator "no"
+
+set -g @catppuccin_directory_text "#{pane_current_path}"
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
 ```
 
 *Key Binding Descriptions*
@@ -138,3 +170,29 @@ bind-key -n F12 select-layout even-horizontal
 - F10: Split the current pane horizontally.
 - F11: Split the current pane vertically.
 - F12: Arrange panes in an even horizontal layout.
+
+# Tmux Plugins
+I like to use Catpuccin as my Tmux theme
+
+## Tmux nerd font window name
+Special icons for programming files
+Installation guide: https://github.com/joshmedeski/tmux-nerd-font-window-name
+
+## Theme – Catpuccin
+Styling theme
+Installation guide: https://github.com/catppuccin/tmux
+
+### Requirements
+Catpuccin uses Nerd Fonts as their default font.
+You can download the Hack Nerd Font (or any other preferred Nerd Font) from the Nerd Fonts repository:
+via shell
+```bash
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip
+unzip Hack.zip -d ~/Library/Fonts/
+```
+or via homebrew
+```bash
+brew tap homebrew/cask-fonts
+brew install --cask font-hack-nerd-font
+```
+After installing Nerd Fonts, make sure to set you iTerm Profile font to `Hack Nerd Font`
