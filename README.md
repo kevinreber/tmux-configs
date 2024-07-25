@@ -10,6 +10,7 @@ Personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (
 - Tmux Quick Guide: https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/
 - Byobu - A simplified Tmux wrapper: https://www.byobu.org/
 - iTerm: https://iterm2.com/
+- Making Tmux Better and Beautiful: https://www.youtube.com/watch?v=jaI3Hcw-ZaA&t=212s
 
 ## Installing Tmux
 
