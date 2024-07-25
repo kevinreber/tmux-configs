@@ -2,7 +2,7 @@
 Personal `tmux.conf` keybindings – inspired from byobu (tmux wrapper)
 
 ## FYI
-I rarely use my `Caps Locks` button for what it's originally intended for so I've overrided it to be `Ctrl` which I feel is more ergonomically friendly when setting prefixes and using spefic keybindings.
+I rarely use my `Caps Locks` button for what it's originally intended for so I've overridden it to be `Ctrl` which I feel is more ergonomically friendly when setting prefixes and using specific keybindings.
 
 ## References
 - Tmux Docs: https://github.com/tmux/tmux/wiki
