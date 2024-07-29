@@ -132,6 +132,9 @@ bind-key -n F10 split-window -v
 bind-key -n F11 split-window -h
 bind-key -n F12 select-layout even-horizontal
 
+# Set status bar to top – I like to see my status bar on the top, this can be helpful when using VIM
+set-option -g status-position top
+
 # Tmux Plugin Manager ##############################
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
