@@ -189,6 +189,12 @@ run '~/.tmux/plugins/tpm/tpm'
 - F12: Arrange panes in an even horizontal layout.
 
 # Tmux Plugins
+Installing `tmux-plugins`
+
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
 I like to use Catpuccin as my Tmux theme
 
 ## Tmux nerd font window name
