@@ -98,9 +98,13 @@ bind -r C-Right resize-pane -R 5
 bind -r C-Up resize-pane -U 5
 bind -r C-Down resize-pane -D 5
 
-# Move between windows
+# Move between windows with Option+Cmd+Right/Left Arrow Keys
 bind -n M-Left previous-window
 bind -n M-Right next-window
+
+# Window swapping with Option+Cmd+Up/Down Arrow keys
+bind -n M-Up swap-window -t -1\; previous-window
+bind -n M-Down swap-window -t +1\; next-window
 
 # Copy mode key bindings
 setw -g mode-keys vi
