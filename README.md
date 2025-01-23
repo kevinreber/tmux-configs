@@ -30,6 +30,10 @@ brew install tmux
 Note: A lot of these keybindings are very similar to Byobu's default settings
 `tmux.conf`
 ```bash
+# Global Variables
+# This is for TPM
+set-environment -g TMUX_PLUGIN_MANAGER_PATH "$HOME/.tmux/plugins"
+
 # Instead of the prefix default Ctrl+b, set prefix to be Ctrl+a
 # Why do this? My Caps Lock button is set to also be Ctrl, so I feel this is more ergonomically comfortable
 set -g prefix C-a
@@ -146,6 +150,14 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'joshmedeski/tmux-nerd-font-window-name'
 # Catpuccin Tmux theme: https://github.com/catppuccin/tmux
 set -g @plugin 'catppuccin/tmux'
+# Tmux Resurrect: https://github.com/tmux-plugins/tmux-resurrect
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+# Tmux continuum: https://github.com/tmux-plugins/tmux-continuum
+set -g @plugin 'tmux-plugins/tmux-continuum'
+
+# Tmux continuum intervalsettings
+set -g @continuum-save-interval '15'
+set -g @continuum-restore 'on'
 
 # Catpuccin settings - Config 3
 set -g @catppuccin_window_left_separator ""
