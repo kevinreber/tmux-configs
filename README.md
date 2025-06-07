@@ -1,9 +1,12 @@
-# tmux configs
-Personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper)
+# My Personal Tmux Setup
+
+This is document of my personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper)
 
 # Quick script to setup tmux
+
 Follow steps below to run a script that will install tmux, tpm and setup your configs to match mine 😎 \
 NOTE: For mac use script `setup_tmux_mac.sh`, for linux use script `setup_tmux_linux.sh`
+
 ```bash
 # 1. Clone repo
 $ git clone https://github.com/kevinreber/tmux-configs.git
@@ -19,10 +22,12 @@ tmux-configs $ ./setup_tmux_mac.sh
 ```
 
 ## My Local Setup
+
 - I rarely use my "Caps Locks" button for what it's originally intended for, so I've overridden it to be "Ctrl". I feel this is more ergonomically friendly when setting prefixes and using specific keybindings in Tmux
 - For my terminal I am using iTerm + zsh
 
 ## References
+
 - Tmux Docs: https://github.com/tmux/tmux/wiki
 - Tmux Quick Guide: https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/
 - Byobu - A simplified Tmux wrapper: https://www.byobu.org/
@@ -44,8 +49,10 @@ brew install tmux
 ```
 
 ## My `.tmux.conf` file
+
 Note: A lot of these keybindings are very similar to Byobu's default settings
 `tmux.conf`
+
 ```bash
 # Global Variables
 # This is for TPM
@@ -201,6 +208,7 @@ run '~/.tmux/plugins/tpm/tpm'
 ```
 
 ### Key Binding Descriptions
+
 - Shift+Left (S-Left): Move to the pane on the left.
 - Shift+Right (S-Right): Move to the pane on the right.
 - Shift+Up (S-Up): Move to the pane above.
@@ -211,6 +219,7 @@ run '~/.tmux/plugins/tpm/tpm'
 - Ctrl+Down (C-Down): Move to the pane below.
 
 ### F-Key Binding Descriptions
+
 - F1: Rename the current window.
 - F2: Create a new window.
 - F3: Go to the previous window.
@@ -225,6 +234,7 @@ run '~/.tmux/plugins/tpm/tpm'
 - F12: Arrange panes in an even horizontal layout.
 
 # Tmux Plugins
+
 Installing `tmux-plugins`
 
 ```bash
@@ -234,39 +244,49 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 I like to use Catpuccin as my Tmux theme
 
 ## Tmux nerd font window name
+
 Special icons for programming files
 Installation guide: https://github.com/joshmedeski/tmux-nerd-font-window-name
 
 ## Tmux Theme Catpuccin
+
 Styling theme
 Installation guide: https://github.com/catppuccin/tmux
 
 ### Catpuccin Requirements
+
 Catpuccin uses Nerd Fonts as their default font.
 You can download the Hack Nerd Font (or any other preferred Nerd Font) from the Nerd Fonts repository locally:
 via shell
+
 ```bash
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip
 unzip Hack.zip -d ~/Library/Fonts/
 ```
+
 or via Homebrew
+
 ```bash
 brew tap homebrew/cask-fonts
 brew install --cask font-hack-nerd-font
 ```
+
 After installing Nerd Fonts, make sure to set you iTerm Profile font to `Hack Nerd Font`
 
-
 ## Why not just use Byobu instead of Tmux?
+
 1. While Byobu is great out the box and can do everything Tmux can, I feel the documentation and community is not as strong as Tmux.
 2. In my experience whenever I think I have a "Byobu related question" it ends up being more of a "Tmux related question" and having Byobu as a wrapper can sometimes complicate the solution I'm looking for. At that point I might as well only be using Tmux.
 3. Byobu does abstract a lot from Tmux and makes thing simple, but it's simplicity also limits the use of plugins and customizations that you can get with "vanilla" Tmux.
 
 ### TLDR;
+
 The Tmux and Byobu relationship is almost like a React vs Angular question. React gives you more freedom while Angular is great out the box but more opinionated on how things are executed.
 
 # Default Tmux Configs
+
 If you ever need to reference or reset your tmux configs, this is the default `tmux.conf`
+
 ```
 default-command ''
 default-shell /bin/zsh
