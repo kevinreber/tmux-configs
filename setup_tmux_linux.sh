@@ -8,7 +8,7 @@ CONFIG_FILE="$HOME/.tmux.conf"
 TPM_PATH="$HOME/.tmux/plugins/tpm"
 
 # --- Confirmation Prompt ---
-read -r -p "Install tmux and setup configs? (Y/N): " response
+read -r -p "Install tmux and setup configs for Linux? (Y/N): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]) ]]
 then
   echo "Continuing with tmux installation and setup..."
@@ -17,10 +17,24 @@ else
   exit 0
 fi
 
-# --- 1. Update and Install tmux ---
-echo "Updating package lists and installing tmux..."
-sudo apt-get update
-sudo apt-get install -y tmux
+# --- 1. Check if tmux is installed ---
+if command -v tmux >/dev/null 2>&1; then
+  echo "Tmux is already installed."
+  read -r -p "Would you like to uninstall tmux and reinstall? (Y/N): " reinstall_tmux
+  if [[ "$reinstall_tmux" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    echo "Uninstalling tmux..."
+    sudo apt-get remove -y tmux
+    echo "Reinstalling tmux..."
+    sudo apt-get update
+    sudo apt-get install -y tmux
+  else
+    echo "Skipping tmux reinstallation."
+  fi
+else
+  echo "Installing tmux..."
+  sudo apt-get update
+  sudo apt-get install -y tmux
+fi
 
 # --- 2. Install TPM ---
 if [ -d "$TPM_PATH" ]; then
@@ -30,9 +44,20 @@ else
   git clone https://github.com/tmux-plugins/tpm "$TPM_PATH"
 fi
 
-# --- 3. Copy the Configuration File ---
-echo "Copying the Configuration File..."
-cp "tmux.conf" "$CONFIG_FILE"
+# --- 3. Handle Existing tmux.conf ---
+if [ -f "$CONFIG_FILE" ]; then
+  echo "tmux config file already exists at $CONFIG_FILE."
+  read -r -p "Would you like to overwrite it? (Y/N): " overwrite_conf
+  if [[ "$overwrite_conf" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    echo "Overwriting tmux config file..."
+    cp "tmux.conf" "$CONFIG_FILE"
+  else
+    echo "Keeping existing tmux config file."
+  fi
+else
+  echo "Copying tmux config file..."
+  cp "tmux.conf" "$CONFIG_FILE"
+fi
 
 # --- 4. Install Plugins ---
 echo "Installing tmux plugins..."
