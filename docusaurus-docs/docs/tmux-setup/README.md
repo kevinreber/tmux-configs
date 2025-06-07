@@ -8,7 +8,7 @@ description: My personal Tmux Configuration
 
 # Tmux Setup
 
-My personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper)
+My personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper) \
 You can view source code [here](https://github.com/kevinreber/tmux-configs/)
 
 ## 🔥 Quick script to setup Tmux

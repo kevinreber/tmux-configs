@@ -1,6 +1,6 @@
 # My Personal Tmux Setup
 
-My personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper)
+My personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper) \
 You can view a more modern version of these docs at [Kevin Reber's Tmux Setup](https://kevinreber.github.io/tmux-configs/docs/tmux-setup/)
 
 # Quick script to setup tmux
