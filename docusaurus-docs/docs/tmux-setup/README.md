@@ -1,13 +1,28 @@
-# My Personal Tmux Setup
+---
+sidebar_label: "Tmux Setup"
+sidebar_position: 1
+id: tmux-setup
+title: My Tmux Setup
+description: My personal Tmux Configuration
+---
 
-This is document of my personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper)
+# Tmux Setup
 
-# Quick script to setup tmux
+Personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper)
 
-Follow steps below to run a script that will install tmux, tpm and setup your configs to match mine 😎 \
-NOTE: For mac use script `setup_tmux_mac.sh`, for linux use script `setup_tmux_linux.sh`
+## 🔥 Quick script to setup Tmux
 
-```bash
+Follow steps below to run a script that will install tmux, tpm and setup your configs to match mine 😎
+:::tip[Scripts to setup Tmux]
+I currently only have created scripts for **MacOS** and **Linux**
+
+- For **MacOS** use `setup_tmux_mac.sh`
+- For **Linux** use `setup_tmux_linux.sh`
+  :::
+
+Example using **MacOS** script
+
+```sh
 # 1. Clone repo
 $ git clone https://github.com/kevinreber/tmux-configs.git
 
@@ -21,20 +36,21 @@ tmux-configs $ chmod +x setup_tmux_mac.sh
 tmux-configs $ ./setup_tmux_mac.sh
 ```
 
-## My Local Setup
+## 🚨 DISCLAIMER
 
-- I rarely use my "Caps Locks" button for what it's originally intended for, so I've overridden it to be "Ctrl". I feel this is more ergonomically friendly when setting prefixes and using specific keybindings in Tmux
-- For my terminal I am using iTerm + zsh
+:::tip[My local setup]
 
-## References
+Some disclaimers before blindly copy/pasting my **.tmux.conf** file below
 
-- Tmux Docs: https://github.com/tmux/tmux/wiki
-- Tmux Quick Guide: https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/
-- Byobu - A simplified Tmux wrapper: https://www.byobu.org/
-- iTerm: https://iterm2.com/
-- Making Tmux Better and Beautiful: https://www.youtube.com/watch?v=jaI3Hcw-ZaA&t=212s
+1. I have overridden my **"Caps Locks"** button to be **"Ctrl"**. Why do I do this?
 
-## Installing Tmux
+   - I rarely use my **"Caps Locks"** button to toggle character casing
+   - It feels more ergonomically friendly when setting prefixes and using specific keybindings in Tmux (and if you're a Vim user 😉)
+
+2. For my terminal and shell I am using **iTerm + zsh** (see [iTerm](https://iterm2.com))
+   :::
+
+## 💻 Installing Tmux
 
 Linux (CentOS)
 
@@ -48,12 +64,12 @@ Mac (Homebrew)
 brew install tmux
 ```
 
-## My `.tmux.conf` file
+## 📄 My `.tmux.conf` file
 
 Note: A lot of these keybindings are very similar to Byobu's default settings
 `tmux.conf`
 
-```bash
+```bash title=".tmux.conf"
 # Global Variables
 # This is for TPM
 set-environment -g TMUX_PLUGIN_MANAGER_PATH "$HOME/.tmux/plugins"
@@ -233,7 +249,7 @@ run '~/.tmux/plugins/tpm/tpm'
 - F11: Split the current pane vertically.
 - F12: Arrange panes in an even horizontal layout.
 
-# Tmux Plugins
+## 🔌 Tmux Plugins
 
 Installing `tmux-plugins`
 
@@ -243,12 +259,12 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 I like to use Catpuccin as my Tmux theme
 
-## Tmux nerd font window name
+### Tmux nerd font window name
 
 Special icons for programming files
 Installation guide: https://github.com/joshmedeski/tmux-nerd-font-window-name
 
-## Tmux Theme Catpuccin
+### Tmux Theme Catpuccin
 
 Styling theme
 Installation guide: https://github.com/catppuccin/tmux
@@ -273,7 +289,7 @@ brew install --cask font-hack-nerd-font
 
 After installing Nerd Fonts, make sure to set you iTerm Profile font to `Hack Nerd Font`
 
-## Why not just use Byobu instead of Tmux?
+## 🤔 Why not just use Byobu instead of Tmux?
 
 1. While Byobu is great out the box and can do everything Tmux can, I feel the documentation and community is not as strong as Tmux.
 2. In my experience whenever I think I have a "Byobu related question" it ends up being more of a "Tmux related question" and having Byobu as a wrapper can sometimes complicate the solution I'm looking for. At that point I might as well only be using Tmux.
@@ -283,7 +299,7 @@ After installing Nerd Fonts, make sure to set you iTerm Profile font to `Hack Ne
 
 The Tmux and Byobu relationship is almost like a React vs Angular question. React gives you more freedom while Angular is great out the box but more opinionated on how things are executed.
 
-# Default Tmux Configs
+## 🔧 Default Tmux Configs
 
 If you ever need to reference or reset your tmux configs, this is the default `tmux.conf`
 
@@ -341,3 +357,11 @@ visual-bell off
 visual-silence off
 word-separators "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~"
 ```
+
+## 📚 References
+
+- [Tmux Docs](https://github.com/tmux/tmux/wiki)
+- [Tmux Quick Guide](https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/)
+- [Byobu - A simplified Tmux wrapper](https://www.byobu.org/)
+- [iTerm](https://iterm2.com/)
+- [Making Tmux Better and Beautiful - YouTube Tutorial](https://www.youtube.com/watch?v=jaI3Hcw-ZaA&t=212s)
