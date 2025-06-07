@@ -1,6 +1,23 @@
 # tmux configs
 Personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper)
 
+# Quick script to setup tmux
+Follow steps below to run a script that will install tmux, tpm and setup your configs to match mine 😎 \
+NOTE: For mac use script `setup_tmux_mac.sh`, for linux use script `setup_tmux_linux.sh`
+```bash
+# 1. Clone repo
+$ git clone https://github.com/kevinreber/tmux-configs.git
+
+# 2. Change directory
+$ cd tmux-configs
+
+# 3. Make sure script is executable
+tmux-configs $ chmod +x setup_tmux_mac.sh
+
+# 4. Run script
+tmux-configs $ ./setup_tmux_mac.sh
+```
+
 ## My Local Setup
 - I rarely use my "Caps Locks" button for what it's originally intended for, so I've overridden it to be "Ctrl". I feel this is more ergonomically friendly when setting prefixes and using specific keybindings in Tmux
 - For my terminal I am using iTerm + zsh
