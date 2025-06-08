@@ -89,5 +89,5 @@ echo "🔄 Killing tmux session..."
 tmux kill-session -t temp_session
 echo "✅ tmux session killed!"
 
-echo "✅ Your configuration will be loaded when you start tmux."
-echo "🚀 tmux setup complete!"
+echo "🚀 tmux setup complete! 🎉 You can now start tmux with `tmux`!"
+echo "☕ You can buy me a coffee at coff.ee/kevinreber"
