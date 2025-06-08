@@ -39,7 +39,12 @@ else
   echo "✅ tmux installed!"
 fi
 
-# --- 2. Install TPM ---
+# --- 2. Install font ---
+echo "🔄 Installing font..."
+brew install --cask font-hack-nerd-font
+echo "✅ font installed!"
+
+# --- 3. Install TPM ---
 if [ -d "$TPM_PATH" ]; then
   echo "⚠️ TPM already installed at $TPM_PATH. Skipping installation."
 else
@@ -48,7 +53,7 @@ else
   echo "✅ TPM installed!"
 fi
 
-# --- 3. Handle Existing tmux.conf ---
+# --- 4. Handle Existing tmux.conf ---
 if [ -f "$CONFIG_FILE" ]; then
   echo "⚠️ tmux config file already exists at $CONFIG_FILE."
   read -r -p "❓ Would you like to overwrite it? (Y/N): " overwrite_conf
@@ -65,7 +70,7 @@ else
   echo "✅ tmux config file copied!"
 fi
 
-# --- 4 & 5. Install Plugins and Source the Configuration ---
+# --- 5. Install Plugins and Source the Configuration ---
 echo "🔄 Creating new tmux session to install plugins..."
 tmux new-session -d -s temp_session
 echo "✅ New tmux session created!"
