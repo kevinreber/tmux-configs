@@ -33,8 +33,10 @@ if command -v tmux >/dev/null 2>&1; then
     echo "🔄 Skipping tmux reinstallation."
   fi
 else
-  echo "🔄 Installing tmux..."
+  echo "🔄 Updating homebrew..."
   brew update
+  echo "✅ Homebrew updated!"
+  echo "🔄 Installing tmux..."
   brew install tmux
   echo "✅ tmux installed!"
 fi
@@ -62,7 +64,7 @@ if [ -f "$CONFIG_FILE" ]; then
     cp "tmux.conf" "$CONFIG_FILE"
     echo "✅ tmux config file overwritten!"
   else
-    echo "🔄 Keeping existing tmux config file."
+    echo "✅ Keeping existing tmux config file at $CONFIG_FILE."
   fi
 else
   echo "🔄 Copying tmux config file..."

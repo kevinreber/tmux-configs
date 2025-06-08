@@ -33,8 +33,10 @@ if command -v tmux >/dev/null 2>&1; then
     echo "🔄 Skipping tmux reinstallation."
   fi
 else
-  echo "🔄 Installing tmux..."
+  echo "🔄 Updating package lists..."
   sudo yum update -y
+  echo "✅ Package lists updated!"
+  echo "🔄 Installing tmux..."
   sudo yum install -y tmux
   echo "✅ tmux installed!"
 fi
@@ -57,7 +59,7 @@ if [ -f "$CONFIG_FILE" ]; then
     cp "tmux.conf" "$CONFIG_FILE"
     echo "✅ tmux config file overwritten!"
   else
-    echo "🔄 Keeping existing tmux config file."
+    echo "✅ Keeping existing tmux config file at $CONFIG_FILE."
   fi
 else
   echo "🔄 Copying tmux config file..."
