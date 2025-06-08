@@ -6,7 +6,12 @@ You can view a more modern version of these docs at [Kevin Reber's Tmux Setup](h
 # Quick script to setup tmux
 
 Follow steps below to run a script that will install tmux, tpm and setup your configs to match mine 😎 \
-NOTE: For mac use script `setup_tmux_mac.sh`, for linux use script `setup_tmux_linux.sh`
+
+NOTE: I currently only have created scripts for **MacOS**, **MarinerOS** and **Linux**
+
+- For **MacOS** use `setup_tmux_mac.sh`
+- For **MarinerOS** use `setup_tmux_mariner.sh`
+- For **Linux** use `setup_tmux_linux.sh`
 
 ```bash
 # 1. Clone repo
