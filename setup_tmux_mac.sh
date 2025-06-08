@@ -8,67 +8,79 @@ CONFIG_FILE="$HOME/.tmux.conf"
 TPM_PATH="$HOME/.tmux/plugins/tpm"
 
 # --- Confirmation Prompt ---
-read -r -p "Install tmux and setup configs for MacOS? (Y/N): " response
+read -r -p "❓ Install tmux and setup configs for MacOS? (Y/N): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]) ]]
 then
-  echo "Continuing with tmux installation and setup..."
+  echo "🚀 Continuing with tmux installation and setup..."
 else
-  echo "Aborting tmux installation and setup."
+  echo "❌ Aborting tmux installation and setup..."
   exit 0
 fi
 
 # --- 1. Check if tmux is installed ---
 if command -v tmux >/dev/null 2>&1; then
-  echo "Tmux is already installed."
-  read -r -p "Would you like to uninstall tmux and reinstall? (Y/N): " reinstall_tmux
+  echo "⚠️ Tmux is already installed."
+  read -r -p "❓ Would you like to uninstall tmux and reinstall? (Y/N): " reinstall_tmux
   if [[ "$reinstall_tmux" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    echo "Uninstalling tmux..."
+    echo "🔄 Uninstalling tmux..."
     brew uninstall tmux
-    echo "Reinstalling tmux..."
+    echo "🔄 Updating homebrew..."
     brew update
+    echo "🔄 Reinstalling tmux..."
     brew install tmux
+    echo "✅ tmux reinstalled!"
   else
-    echo "Skipping tmux reinstallation."
+    echo "🔄 Skipping tmux reinstallation."
   fi
 else
-  echo "Installing tmux..."
+  echo "🔄 Installing tmux..."
   brew update
   brew install tmux
+  echo "✅ tmux installed!"
 fi
 
 # --- 2. Install TPM ---
 if [ -d "$TPM_PATH" ]; then
-  echo "TPM already installed at $TPM_PATH. Skipping installation."
+  echo "⚠️ TPM already installed at $TPM_PATH. Skipping installation."
 else
-  echo "Installing TPM (tmux Plugin Manager)..."
+  echo "🔄 Installing TPM (tmux Plugin Manager)..."
   git clone https://github.com/tmux-plugins/tpm "$TPM_PATH"
+  echo "✅ TPM installed!"
 fi
 
 # --- 3. Handle Existing tmux.conf ---
 if [ -f "$CONFIG_FILE" ]; then
-  echo "tmux config file already exists at $CONFIG_FILE."
-  read -r -p "Would you like to overwrite it? (Y/N): " overwrite_conf
+  echo "⚠️ tmux config file already exists at $CONFIG_FILE."
+  read -r -p "❓ Would you like to overwrite it? (Y/N): " overwrite_conf
   if [[ "$overwrite_conf" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    echo "Overwriting tmux config file..."
+    echo "🔄 Overwriting tmux config file..."
     cp "tmux.conf" "$CONFIG_FILE"
+    echo "✅ tmux config file overwritten!"
   else
-    echo "Keeping existing tmux config file."
+    echo "🔄 Keeping existing tmux config file."
   fi
 else
-  echo "Copying tmux config file..."
+  echo "🔄 Copying tmux config file..."
   cp "tmux.conf" "$CONFIG_FILE"
+  echo "✅ tmux config file copied!"
 fi
 
-# --- 4. Install Plugins ---
-echo "Installing tmux plugins..."
+# --- 4 & 5. Install Plugins and Source the Configuration ---
+echo "🔄 Creating new tmux session to install plugins..."
 tmux new-session -d -s temp_session
+echo "✅ New tmux session created!"
+
+echo "🔄 Attempting to install tmux plugins..."
 tmux send-keys -t temp_session:0 "$HOME/.tmux/plugins/tpm/bin/install_plugins" C-m
+echo "✅ Plugins installed!"
+
+echo "🔄 Attempting to source tmux configuration..."
+tmux source-file "$CONFIG_FILE"
+echo "✅ tmux configuration reloaded!"
+
+echo "🔄 Killing tmux session..."
 tmux kill-session -t temp_session
+echo "✅ tmux session killed!"
 
-# --- 5. Source the Configuration ---
-echo "Sourcing the Configuration..."
-tmux source-file "$CONFIG_FILE" \; display "tmux configuration reloaded!"
-
-echo "tmux setup complete!"
-
-
+echo "✅ Your configuration will be loaded when you start tmux."
+echo "🚀 tmux setup complete!"
