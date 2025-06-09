@@ -12,6 +12,13 @@ TPM_PATH="$HOME/.tmux/plugins/tpm"
 install_plugins_and_source() {
     echo "🔄 Setting up tmux plugins and configuration..."
 
+    # Create a temporary session if one doesn't exist
+    if ! tmux has-session -t temp_session 2>/dev/null; then
+        echo "🔄 Creating temporary tmux session..."
+        tmux new-session -d -s temp_session
+        echo "✅ Temporary session created!"
+    fi
+
     # Source the configuration
     echo "🔄 Sourcing tmux configuration..."
     if [ -f "$CONFIG_FILE" ]; then
@@ -22,20 +29,24 @@ install_plugins_and_source() {
         return 1
     fi
 
-    # Create a temporary session if one doesn't exist
-    if ! tmux has-session -t temp_session 2>/dev/null; then
-        echo "🔄 Creating temporary tmux session..."
-        tmux new-session -d -s temp_session
-        echo "✅ Temporary session created!"
-    fi
-
     # Install plugins
     echo "🔄 Installing tmux plugins..."
     if [ -f "$TPM_PATH/bin/install_plugins" ]; then
+        # Get list of plugins from tmux.conf
+        PLUGINS=$(grep -o "set -g @plugin '[^']*'" "$CONFIG_FILE" | cut -d"'" -f2)
+
+        # Install plugins
         tmux send-keys -t temp_session:0 "$TPM_PATH/bin/install_plugins" C-m
-        # Wait for plugins to install
-        sleep 5
-        echo "✅ Plugins installation initiated!"
+
+        # Wait for plugins to be installed
+        echo "🔄 Waiting for plugins to install..."
+        for plugin in $PLUGINS; do
+            plugin_name=$(basename "$plugin")
+            while [ ! -d "$HOME/.tmux/plugins/$plugin_name" ]; do
+                sleep 1
+            done
+        done
+        echo "✅ Plugins installed!"
     else
         echo "❌ TPM install script not found at $TPM_PATH/bin/install_plugins"
         return 1
