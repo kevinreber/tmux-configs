@@ -46,14 +46,14 @@ install_plugins_and_source() {
     tmux kill-session -t temp_session 2>/dev/null
     echo "✅ Temporary session removed!"
 
-    echo "🚀 tmux setup complete! 🎉 You can now start tmux with `tmux`!"
+    echo '🚀 tmux setup complete! 🎉 You can now start a new tmux session by entering "tmux"!'
     echo "☕ You can buy me a coffee at coff.ee/kevinreber"
 }
 
 # --- Arrow Key Selection Menu ---
 # Function to handle arrow key input
 arrow_key_menu() {
-    local options=("🍎 macOS" "🐧 Linux (yum)" "🚢 CBL-Mariner")
+    local options=("🍎 MacOS" "🐧 Linux (yum)" "🚢 CBL-Mariner")
     local selected=0
     local key
 
@@ -115,7 +115,7 @@ os_choice=$?
 # --- Execute the appropriate script based on selection ---
 case $os_choice in
     0)
-        echo "🍎 Selected macOS"
+        echo "🍎 Selected MacOS"
         bash "$SCRIPT_DIR/setup_tmux_mac.sh"
         ;;
     1)

@@ -26,7 +26,7 @@ tmux-configs $ ./setup_tmux.sh
 🌐 Please select your operating system:
 Use ↑/↓ arrows to move, Enter to select
 
-> 🍎 macOS
+> 🍎 MacOS
   🐧 Linux (yum)
   🚢 CBL-Mariner
 ```
