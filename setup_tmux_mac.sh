@@ -72,22 +72,22 @@ else
   echo "✅ tmux config file copied!"
 fi
 
-# --- 5. Install Plugins and Source the Configuration ---
-echo "🔄 Creating new tmux session to install plugins..."
-tmux new-session -d -s temp_session
-echo "✅ New tmux session created!"
+# # --- 5. Install Plugins and Source the Configuration ---
+# echo "🔄 Creating new tmux session to install plugins..."
+# tmux new-session -d -s temp_session
+# echo "✅ New tmux session created!"
 
-echo "🔄 Attempting to install tmux plugins..."
-tmux send-keys -t temp_session:0 "$HOME/.tmux/plugins/tpm/bin/install_plugins" C-m
-echo "✅ Plugins installed!"
+# echo "🔄 Attempting to install tmux plugins..."
+# tmux send-keys -t temp_session:0 "$HOME/.tmux/plugins/tpm/bin/install_plugins" C-m
+# echo "✅ Plugins installed!"
 
-echo "🔄 Attempting to source tmux configuration..."
-tmux source-file "$CONFIG_FILE"
-echo "✅ tmux configuration reloaded!"
+# echo "🔄 Attempting to source tmux configuration..."
+# tmux source-file "$CONFIG_FILE"
+# echo "✅ tmux configuration reloaded!"
 
-echo "🔄 Killing tmux session..."
-tmux kill-session -t temp_session
-echo "✅ tmux session killed!"
+# echo "🔄 Killing tmux session..."
+# tmux kill-session -t temp_session
+# echo "✅ tmux session killed!"
 
-echo "🚀 tmux setup complete! 🎉 You can now start tmux with `tmux`!"
-echo "☕ You can buy me a coffee at coff.ee/kevinreber"
+# echo "🚀 tmux setup complete! 🎉 You can now start tmux with `tmux`!"
+# echo "☕ You can buy me a coffee at coff.ee/kevinreber"

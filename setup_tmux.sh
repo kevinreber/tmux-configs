@@ -5,6 +5,50 @@ set -e
 
 # --- Global Variables ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="$HOME/.tmux.conf"
+TPM_PATH="$HOME/.tmux/plugins/tpm"
+
+# Function to install plugins and source config
+install_plugins_and_source() {
+    echo "🔄 Setting up tmux plugins and configuration..."
+
+    # Source the configuration
+    echo "🔄 Sourcing tmux configuration..."
+    if [ -f "$CONFIG_FILE" ]; then
+        tmux source-file "$CONFIG_FILE"
+        echo "✅ tmux configuration reloaded!"
+    else
+        echo "❌ tmux config file not found at $CONFIG_FILE"
+        return 1
+    fi
+
+    # Create a temporary session if one doesn't exist
+    if ! tmux has-session -t temp_session 2>/dev/null; then
+        echo "🔄 Creating temporary tmux session..."
+        tmux new-session -d -s temp_session
+        echo "✅ Temporary session created!"
+    fi
+
+    # Install plugins
+    echo "🔄 Installing tmux plugins..."
+    if [ -f "$TPM_PATH/bin/install_plugins" ]; then
+        tmux send-keys -t temp_session:0 "$TPM_PATH/bin/install_plugins" C-m
+        # Wait for plugins to install
+        sleep 5
+        echo "✅ Plugins installation initiated!"
+    else
+        echo "❌ TPM install script not found at $TPM_PATH/bin/install_plugins"
+        return 1
+    fi
+
+    # Kill the temporary session
+    echo "🔄 Cleaning up temporary session..."
+    tmux kill-session -t temp_session 2>/dev/null
+    echo "✅ Temporary session removed!"
+
+    echo "🚀 tmux setup complete! 🎉 You can now start tmux with `tmux`!"
+    echo "☕ You can buy me a coffee at coff.ee/kevinreber"
+}
 
 # --- Arrow Key Selection Menu ---
 # Function to handle arrow key input
@@ -86,4 +130,7 @@ case $os_choice in
         echo "❌ Invalid selection. Please run the script again and select a valid option."
         exit 1
         ;;
-esac 
+esac
+
+# After OS-specific script completes, install plugins and source config
+install_plugins_and_source
