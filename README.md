@@ -9,10 +9,6 @@ Follow steps below to run a script that will install tmux, tpm and setup your co
 
 NOTE: I currently only have created scripts for **MacOS**, **MarinerOS** and **Linux**
 
-- For **MacOS** use `setup_tmux_mac.sh`
-- For **MarinerOS** use `setup_tmux_mariner.sh`
-- For **Linux** use `setup_tmux_linux.sh`
-
 ```bash
 # 1. Clone repo
 $ git clone https://github.com/kevinreber/tmux-configs.git
@@ -21,10 +17,18 @@ $ git clone https://github.com/kevinreber/tmux-configs.git
 $ cd tmux-configs
 
 # 3. Make sure script is executable
-tmux-configs $ chmod +x setup_tmux_mac.sh
+tmux-configs $ chmod +x setup_tmux.sh
 
 # 4. Run script
-tmux-configs $ ./setup_tmux_mac.sh
+tmux-configs $ ./setup_tmux.sh
+
+# 5. Select OS to run
+🌐 Please select your operating system:
+Use ↑/↓ arrows to move, Enter to select
+
+> 🍎 macOS
+  🐧 Linux (yum)
+  🚢 CBL-Mariner
 ```
 
 ## My Local Setup
