@@ -3,12 +3,22 @@
 # Stop on error
 set -e
 
+# --- CI Mode Flag ---
+CI_MODE=false
+if [[ "$1" == "--ci" || "$1" == "-y" ]]; then
+    CI_MODE=true
+fi
+
 # --- Global Variables ---
 CONFIG_FILE="$HOME/.tmux.conf"
 TPM_PATH="$HOME/.tmux/plugins/tpm"
 
 # --- Confirmation Prompt ---
-read -r -p "❓ Install tmux and setup configs for MacOS? (Y/N): " response
+if [ "$CI_MODE" = true ]; then
+    response="y"
+else
+    read -r -p "❓ Install tmux and setup configs for MacOS? (Y/N): " response
+fi
 if [[ "$response" =~ ^([yY][eE][sS]|[yY]) ]]
 then
   echo "🚀 Continuing with tmux installation and setup..."
@@ -20,7 +30,11 @@ fi
 # --- 1. Check if tmux is installed ---
 if command -v tmux >/dev/null 2>&1; then
   echo "⚠️ Tmux is already installed."
-  read -r -p "❓ Would you like to uninstall tmux and reinstall? (Y/N): " reinstall_tmux
+  if [ "$CI_MODE" = true ]; then
+      reinstall_tmux="n"
+  else
+      read -r -p "❓ Would you like to uninstall tmux and reinstall? (Y/N): " reinstall_tmux
+  fi
   if [[ "$reinstall_tmux" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo "🔄 Uninstalling tmux..."
     brew uninstall tmux
@@ -58,7 +72,11 @@ fi
 # --- 4. Handle Existing tmux.conf ---
 if [ -f "$CONFIG_FILE" ]; then
   echo "⚠️ tmux config file already exists at $CONFIG_FILE."
-  read -r -p "❓ Would you like to overwrite it? (Y/N): " overwrite_conf
+  if [ "$CI_MODE" = true ]; then
+      overwrite_conf="y"
+  else
+      read -r -p "❓ Would you like to overwrite it? (Y/N): " overwrite_conf
+  fi
   if [[ "$overwrite_conf" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo "🔄 Overwriting tmux config file..."
     cp "tmux.conf" "$CONFIG_FILE"

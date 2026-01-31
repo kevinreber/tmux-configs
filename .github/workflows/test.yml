@@ -1,0 +1,92 @@
+name: Test Installation Scripts
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # ============================================
+  # Job 1: Static Analysis with ShellCheck
+  # ============================================
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: '.'
+          ignore_paths: 'docusaurus-docs node_modules'
+          severity: warning
+
+  # ============================================
+  # Job 2: E2E Test on Linux (yum-based)
+  # ============================================
+  test-linux-yum:
+    name: E2E Test - Linux (yum)
+    runs-on: ubuntu-latest
+    container:
+      image: rockylinux:8
+    steps:
+      - name: Install prerequisites
+        run: |
+          yum install -y git sudo
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run setup script
+        run: |
+          # Run the Linux setup script in non-interactive mode
+          echo "y" | bash setup_tmux_linux.sh --ci
+
+      - name: Verify installation
+        run: bash scripts/verify_install.sh
+
+  # ============================================
+  # Job 3: E2E Test on CBL-Mariner
+  # ============================================
+  test-mariner:
+    name: E2E Test - CBL-Mariner
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/cbl-mariner/base/core:2.0
+    steps:
+      - name: Install prerequisites
+        run: |
+          tdnf install -y git sudo ca-certificates
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run setup script
+        run: |
+          # Run the Mariner setup script in non-interactive mode
+          echo "y" | bash setup_tmux_mariner.sh --ci
+
+      - name: Verify installation
+        run: bash scripts/verify_install.sh
+
+  # ============================================
+  # Job 4: E2E Test on macOS
+  # ============================================
+  test-macos:
+    name: E2E Test - macOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run setup script
+        run: |
+          # Run the macOS setup script in non-interactive mode
+          echo "y" | bash setup_tmux_mac.sh --ci
+
+      - name: Verify installation
+        run: bash scripts/verify_install.sh
