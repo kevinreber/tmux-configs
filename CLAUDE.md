@@ -16,6 +16,7 @@ This document provides comprehensive guidance for AI assistants working with thi
 ```
 /
 ├── README.md                    # Main project documentation
+├── CLAUDE.md                    # AI assistant guidelines (this file)
 ├── tmux.conf                    # Primary tmux configuration (copy to ~/.tmux.conf)
 ├── setup_tmux.sh                # Interactive OS selector script (entry point)
 ├── setup_tmux_mac.sh            # macOS-specific setup (uses Homebrew)
@@ -28,10 +29,25 @@ This document provides comprehensive guidance for AI assistants working with thi
 │   └── deploy.yml               # CD: Docusaurus deployment to GitHub Pages
 └── docusaurus-docs/             # Documentation website (Node.js/TypeScript)
     ├── package.json             # Dependencies (Node 18+, Docusaurus 3.8.1)
+    ├── package-lock.json        # Locked dependency versions
     ├── docusaurus.config.ts     # Site configuration
-    ├── sidebars.ts              # Documentation navigation
-    ├── docs/                    # Markdown documentation content
-    └── src/                     # React components and styling
+    ├── sidebars.ts              # Documentation navigation (auto-generated)
+    ├── tsconfig.json             # TypeScript config (extends @docusaurus/tsconfig)
+    ├── docs/
+    │   └── tmux-setup/
+    │       └── README.md        # Main documentation page (MDX-enhanced)
+    ├── src/
+    │   ├── css/
+    │   │   └── custom.css       # Theme customization (green primary, dark mode)
+    │   └── pages/
+    │       ├── index.tsx         # Homepage React component
+    │       ├── index.module.css  # Homepage styles
+    │       └── markdown-page.md  # Additional markdown page
+    └── static/
+        ├── .nojekyll            # Prevents Jekyll processing on GitHub Pages
+        └── img/
+            ├── favicon.png
+            └── logo.png
 ```
 
 ## Common Commands
@@ -39,7 +55,7 @@ This document provides comprehensive guidance for AI assistants working with thi
 ### Setup Scripts
 
 ```bash
-# Interactive setup (prompts for OS selection)
+# Interactive setup (prompts for OS selection via arrow-key menu)
 ./setup_tmux.sh
 
 # Direct OS-specific setup
@@ -76,20 +92,25 @@ npm run build
 
 # Serve production build locally
 npm run serve
+
+# Clear Docusaurus cache
+npm run clear
 ```
 
 ## CI/CD Pipeline
 
-### test.yml (Triggered on: push/PR to main)
+### test.yml (Triggered on: push/PR to main, manual dispatch)
 
-1. **ShellCheck** - Static analysis of all bash scripts
-2. **E2E Linux** - Full install test on Rocky Linux 8 container
-3. **E2E macOS** - Full install test on macOS runner
-4. **E2E Mariner** - Full install test on CBL-Mariner container
+1. **ShellCheck** - Static analysis of all bash scripts (severity: warning, excludes `docusaurus-docs/` and `node_modules/`)
+2. **E2E Linux** - Full install test on Rocky Linux 8 container (`rockylinux:8`)
+3. **E2E macOS** - Full install test on macOS runner (`macos-latest`)
+4. **E2E Mariner** - Full install test on CBL-Mariner container (`mcr.microsoft.com/cbl-mariner/base/core:2.0`)
 
-### deploy.yml (Triggered on: push to main)
+Each E2E job runs the OS-specific setup script with `--ci` flag, then runs `scripts/verify_install.sh`.
 
-Builds and deploys Docusaurus site to GitHub Pages (gh-pages branch)
+### deploy.yml (Triggered on: push to main, manual dispatch)
+
+Builds Docusaurus site (Node 18, `npm ci` + `npm run build`) and deploys to GitHub Pages via `gh-pages` branch using `peaceiris/actions-gh-pages@v3`.
 
 ## Code Conventions
 
@@ -100,6 +121,7 @@ Builds and deploys Docusaurus site to GitHub Pages (gh-pages branch)
 - **Functions before main logic**: Helper functions defined before they're called
 - **Command checks**: Use `command -v <tool> >/dev/null 2>&1` to check for installed tools
 - **User prompts**: Use `read -r -p` with descriptive prompts
+- **Response validation**: `[[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]`
 - **Visual feedback with emojis**:
   - `🔄` = In progress
   - `✅` = Success
@@ -116,6 +138,7 @@ set -e
 # Global variables
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_FILE="tmux.conf"
+TPM_PATH="$HOME/.tmux/plugins/tpm"
 
 # CI mode detection
 CI_MODE=false
@@ -138,19 +161,39 @@ confirm_action() {
 ### Tmux Configuration
 
 - **Prefix key**: `Ctrl+a` (remapped from default `Ctrl+b`)
+- **Status bar**: Positioned at top (`set -g status-position top`)
+- **Mouse**: Enabled (`set -g mouse on`)
 - **Key binding style**: Byobu-inspired F-keys plus arrow-key navigation
-- **Plugin management**: TPM (Tmux Plugin Manager) at end of config
+  - `Shift+Arrow`: Pane navigation
+  - `Ctrl+Arrow`: Pane navigation and resizing
+  - `Alt+Arrow`: Window switching and swapping
+  - `F1-F12`: Byobu-style function keys
+- **Plugin management**: TPM (Tmux Plugin Manager) initialized at end of config
 - **Reload bindings**: Both `prefix + r` and `prefix + R`
+- **Theme**: Catppuccin with custom separators and status modules
+
+### Docusaurus Site
+
+- **Framework**: Docusaurus 3.8.1 with React 19 and TypeScript 5.6
+- **Site URL**: https://kevinreber.github.io/tmux-configs/
+- **Sidebar**: Auto-generated from filesystem structure
+- **Theme**: Green primary (#2e8555), dark mode with teal variations
+- **Strict mode**: Broken links throw errors, broken markdown links warn
+- **Prism themes**: GitHub (light) / Dracula (dark)
 
 ## Key Files to Understand
 
 | File | Purpose |
 |------|---------|
 | `tmux.conf` | Main tmux settings, keybindings, and plugins |
-| `setup_tmux.sh` | Entry point with interactive OS menu |
-| `setup_tmux_*.sh` | OS-specific install scripts |
-| `scripts/verify_install.sh` | Post-install validation with detailed checks |
-| `.github/workflows/test.yml` | Multi-platform CI testing |
+| `setup_tmux.sh` | Entry point with interactive arrow-key OS menu |
+| `setup_tmux_mac.sh` | macOS setup via Homebrew (includes font install) |
+| `setup_tmux_linux.sh` | Linux setup via yum |
+| `setup_tmux_mariner.sh` | CBL-Mariner setup via tdnf (includes font fallback logic) |
+| `scripts/verify_install.sh` | Post-install validation with colored output and pass/fail/warn counters |
+| `.github/workflows/test.yml` | Multi-platform CI testing (4 parallel jobs) |
+| `.github/workflows/deploy.yml` | Docusaurus build and GitHub Pages deployment |
+| `docusaurus-docs/docusaurus.config.ts` | Site config (URL, navbar, footer, theme) |
 
 ## Testing Approach
 
@@ -171,14 +214,16 @@ shellcheck setup_tmux.sh setup_tmux_*.sh scripts/*.sh
 
 ## Tmux Plugins Used
 
-| Plugin | Purpose |
-|--------|---------|
-| tpm | Tmux Plugin Manager |
-| vim-tmux-navigator | Seamless Vim/Tmux pane navigation |
-| tmux-nerd-font-window-name | Nerd font icons for file types |
-| catppuccin/tmux | Catppuccin color theme |
-| tmux-resurrect | Session persistence |
-| tmux-continuum | Auto-save sessions (every 15min) |
+| Plugin | Repository | Purpose |
+|--------|-----------|---------|
+| tpm | `tmux-plugins/tpm` | Tmux Plugin Manager |
+| vim-tmux-navigator | `christoomey/vim-tmux-navigator` | Seamless Vim/Tmux pane navigation |
+| tmux-nerd-font-window-name | `joshmedeski/tmux-nerd-font-window-name` | Nerd font icons for file types |
+| catppuccin/tmux | `catppuccin/tmux` | Catppuccin color theme |
+| tmux-resurrect | `tmux-plugins/tmux-resurrect` | Session persistence |
+| tmux-continuum | `tmux-plugins/tmux-continuum` | Auto-save sessions (every 15min) |
+
+**Font requirement**: Hack Nerd Font (v3.4.0, with v2.1.0 fallback on Mariner)
 
 ## Git Conventions
 
@@ -219,9 +264,17 @@ shellcheck setup_tmux.sh setup_tmux_*.sh scripts/*.sh
 ### Adding a Tmux Plugin
 
 1. Add plugin line to `tmux.conf`: `set -g @plugin 'author/plugin-name'`
-2. Update verification script if it should check for this plugin
+2. Add to expected plugins array in `scripts/verify_install.sh`
 3. Document in README.md
 4. Run `prefix + I` in tmux to install
+
+### Modifying the Documentation Site
+
+1. Edit files in `docusaurus-docs/docs/` for content changes
+2. Edit `docusaurus-docs/src/` for layout/component changes
+3. Test locally with `cd docusaurus-docs && npm start`
+4. Production build test: `npm run build` (catches broken links)
+5. Deployment is automatic on push to main
 
 ## Troubleshooting
 
@@ -229,3 +282,5 @@ shellcheck setup_tmux.sh setup_tmux_*.sh scripts/*.sh
 - **Plugins not loading**: Run `~/.tmux/plugins/tpm/scripts/install_plugins.sh`
 - **Config not applying**: Run `tmux source-file ~/.tmux.conf` or restart tmux
 - **Verification failures**: Check if tmux version is 3.0+ (`tmux -V`)
+- **Docusaurus build fails**: Check Node version (18+ required), try `npm run clear` then rebuild
+- **ShellCheck warnings**: Run `shellcheck <script>` locally to see detailed explanations
