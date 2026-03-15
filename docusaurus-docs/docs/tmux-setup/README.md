@@ -3,78 +3,204 @@ sidebar_label: "Tmux Setup"
 sidebar_position: 1
 id: tmux-setup
 title: My Tmux Setup
-description: My personal Tmux Configuration
+description: A fully configured tmux environment with Byobu-style keybindings, session persistence, and Catppuccin theming.
 ---
 
 # Tmux Setup
 
-My personal `tmux.conf` configs and keybindings – inspired by Byobu keybindings (a Tmux wrapper) \
-You can view source code [here](https://github.com/kevinreber/tmux-configs/)
+Get a fully configured tmux environment with Byobu-style keybindings, session persistence, and Catppuccin theming — in one command.
 
-## 🔥 Quick script to setup Tmux
+[View source code on GitHub](https://github.com/kevinreber/tmux-configs/)
 
-Follow steps below to run a script that will install tmux, tpm and setup your configs to match mine 😎
-:::tip[Scripts to setup Tmux]
-I currently only have created scripts for **MacOS**, **Mariner** and **Linux**
-:::
+## Prerequisites
 
-Example using **MacOS** script
+Before running the setup, make sure you have:
+
+| Requirement | Details |
+|---|---|
+| **OS** | macOS, Linux (yum-based), or CBL-Mariner |
+| **Homebrew** (macOS only) | [Install Homebrew](https://brew.sh/) |
+| **Nerd Font** | [Hack Nerd Font](https://github.com/ryanoasis/nerd-fonts) — required for icons and the Catppuccin theme |
+| **Terminal font setting** | Set your terminal's font to `Hack Nerd Font` after install |
+| **tmux** | 3.0+ (the setup script will install it for you) |
+
+<details>
+<summary><strong>Installing Hack Nerd Font manually</strong></summary>
+
+**Via Homebrew (macOS):**
+
+```bash
+brew install --cask font-hack-nerd-font
+```
+
+**Via shell (any OS):**
+
+```bash
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Hack.zip
+unzip Hack.zip -d ~/Library/Fonts/    # macOS
+# unzip Hack.zip -d ~/.local/share/fonts/  # Linux
+```
+
+After installing, set your terminal's font to **Hack Nerd Font** (e.g., in iTerm: Preferences > Profiles > Text > Font).
+
+</details>
+
+## Quick Start
 
 ```sh
-# 1. Clone repo
-$ git clone https://github.com/kevinreber/tmux-configs.git
+# Clone and run
+git clone https://github.com/kevinreber/tmux-configs.git
+cd tmux-configs
+chmod +x setup_tmux.sh
+./setup_tmux.sh
+```
 
-# 2. Change directory
-$ cd tmux-configs
+The interactive menu will guide you through selecting your OS:
 
-# 3. Make sure script is executable
-tmux-configs $ chmod +x setup_tmux.sh
-
-# 4. Run script
-tmux-configs $ ./setup_tmux.sh
-
-# 5. Select OS to run
+```
 🌐 Please select your operating system:
 Use ↑/↓ arrows to move, Enter to select
 
 > 🍎 MacOS
   🐧 Linux (yum)
   🚢 CBL-Mariner
-
 ```
 
-## 🚨 DISCLAIMER
+:::tip[That's it!]
+The script installs tmux, copies the config, sets up TPM, and installs all plugins automatically.
+:::
 
-:::tip[My local setup]
-
-Some disclaimers before blindly copy/pasting my **.tmux.conf** file below
-
-1. I have overridden my **"Caps Locks"** button to be **"Ctrl"**. Why do I do this?
-
-   - I rarely use my **"Caps Locks"** button to toggle character casing
-   - It feels more ergonomically friendly when setting prefixes and using specific keybindings in Tmux (and if you're a Vim user 😉)
-
-2. For my terminal and shell I am using **iTerm + zsh** (see [iTerm](https://iterm2.com))
-   :::
-
-## 💻 Installing Tmux
-
-Linux (CentOS)
+<details>
+<summary><strong>Advanced: Run OS-specific scripts directly</strong></summary>
 
 ```bash
-sudo yum install tmux
+./setup_tmux_mac.sh          # macOS with Homebrew
+./setup_tmux_linux.sh        # Linux with yum
+./setup_tmux_mariner.sh      # CBL-Mariner with tdnf
+
+# CI/non-interactive mode (auto-accepts all prompts)
+./setup_tmux_mac.sh --ci
 ```
 
-Mac (Homebrew)
+</details>
 
+## What You Get
+
+After running the setup script:
+
+- **tmux installed** via your OS package manager
+- **Config deployed** to `~/.tmux.conf`
+- **TPM installed** at `~/.tmux/plugins/tpm`
+- **Plugins auto-installed** — Catppuccin theme, session persistence, nerd font icons
+- **Status bar** at the top with Catppuccin styling
+
+**Reload config** after making changes:
 ```bash
-brew install tmux
+# Inside tmux:
+Ctrl+a then r
+
+# From the command line:
+tmux source-file ~/.tmux.conf
 ```
 
-## 📄 My `.tmux.conf` file
+**Verify installation:**
+```bash
+./scripts/verify_install.sh
+```
 
-Note: A lot of these keybindings are very similar to Byobu's default settings
-`tmux.conf`
+**Uninstall / reset to defaults:**
+```bash
+rm ~/.tmux.conf
+rm -rf ~/.tmux/plugins
+```
+
+## 🚨 My Local Setup
+
+:::tip[Before you copy/paste]
+
+1. I've overridden **Caps Lock** to act as **Ctrl** — it's more ergonomic for tmux's prefix key and for Vim
+2. Terminal: **iTerm** + **zsh** ([iTerm](https://iterm2.com))
+
+:::
+
+## Keybindings
+
+> **Prefix key:** `Ctrl+a` (remapped from the default `Ctrl+b`)
+
+### Pane Navigation
+
+| Shortcut | Action |
+|---|---|
+| `Shift+Arrow` | Move to adjacent pane |
+| `Ctrl+Arrow` | Move to adjacent pane (alternative) |
+| `Prefix + \|` | Split pane horizontally |
+| `Prefix + -` | Split pane vertically |
+
+### Pane Management
+
+| Shortcut | Action |
+|---|---|
+| `Prefix + Ctrl+Arrow` | Resize pane by 5 units |
+| `Prefix + S` | Synchronize (type in all panes at once) |
+| `Prefix + x` | Kill current pane |
+
+### Window Navigation
+
+| Shortcut | Action |
+|---|---|
+| `Alt+Left / Alt+Right` | Previous / next window |
+| `Alt+Up / Alt+Down` | Swap window left / right |
+| `Prefix + Ctrl+c` | New window |
+| `Prefix + Ctrl+n / Ctrl+p` | Next / previous window |
+| `Prefix + X` | Kill current window |
+
+### Session & General
+
+| Shortcut | Action |
+|---|---|
+| `Prefix + r` or `R` | Reload tmux config |
+| `Prefix + Ctrl+d` | Detach from session |
+| `F7` | Browse sessions/windows tree |
+
+### Copy Mode (vi-style)
+
+| Shortcut | Action |
+|---|---|
+| `v` | Begin selection |
+| `y` | Copy selection |
+
+### F-Key Quick Actions (Byobu-style)
+
+| Key | Action |
+|---|---|
+| `F1` | Rename current window |
+| `F2` | New window |
+| `F3` / `F4` | Previous / next window |
+| `F5` | Refresh screen |
+| `F6` | Detach from session |
+| `F7` | Browse session tree |
+| `F8` | Swap window |
+| `F9` | Kill window |
+| `F10` / `F11` | Split pane vertically / horizontally |
+| `F12` | Even horizontal layout |
+
+## Plugins
+
+All plugins are managed by [TPM](https://github.com/tmux-plugins/tpm) and installed automatically by the setup script.
+
+| Plugin | Purpose |
+|---|---|
+| [catppuccin/tmux](https://github.com/catppuccin/tmux) | Catppuccin color theme |
+| [tmux-nerd-font-window-name](https://github.com/joshmedeski/tmux-nerd-font-window-name) | Nerd font icons for file types |
+| [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | Save and restore sessions across restarts |
+| [tmux-continuum](https://github.com/tmux-plugins/tmux-continuum) | Auto-save sessions every 15 minutes |
+
+To install new plugins after adding them to `tmux.conf`, press **`Prefix + I`** inside tmux.
+
+## Config File
+
+<details>
+<summary><strong>View full <code>.tmux.conf</code></strong></summary>
 
 ```bash title=".tmux.conf"
 # Global Variables
@@ -82,38 +208,10 @@ Note: A lot of these keybindings are very similar to Byobu's default settings
 set-environment -g TMUX_PLUGIN_MANAGER_PATH "$HOME/.tmux/plugins"
 
 # Instead of the prefix default Ctrl+b, set prefix to be Ctrl+a
-# Why do this? My Caps Lock button is set to also be Ctrl, so I feel this is more ergonomically comfortable
 set -g prefix C-a
 
 # Enable interactive mouse
 set -g mouse on
-
-# Byobu-like tmux configuration below
-
-# I use a theme for styling, so I don't use the Byobu default styling 😄 ############################################
-# General Settings
-# set -g default-terminal "screen-256color"
-# set -g history-limit 10000
-# set -g base-index 1
-# setw -g pane-base-index 1
-# set -g renumber-windows on
-# set -s escape-time 0
-
-# Status Bar Settings
-# set -g status-bg colour234
-# set -g status-fg white
-# set -g status-interval 5
-# set -g status-left-length 32
-# set -g status-right-length 150
-# set -g status-left '#[fg=colour16,bg=colour254,bold] #S #[fg=colour254,bg=colour238,nobold]#[fg=colour238,bg=colour234,nobold]#[fg=colour143,bg=colour018,nobold] #h |'
-# set -g status-right '#[fg=colour16,bg=colour254,bold] %R #[fg=colour245] %d %b #[fg=colour16,bg=colour254,bold] #h '
-# set -g window-status-format "#[fg=white,bg=colour234] #I #W "
-# set -g window-status-current-format "#[fg=colour234,bg=colour39]#[fg=colour16,bg=colour39,noreverse,bold] #I ❭ #W #[fg=colour39,bg=colour234,nobold]"
-
-# Pane Borders
-# set-option -g pane-active-border-style "bg=black,fg=green"
-# set-option -g pane-border-style "bg=default,fg=white"
-# End of Byobu default styling ############################################
 
 # Activity Monitoring
 set-option -g visual-activity on
@@ -187,28 +285,23 @@ bind-key -n F10 split-window -v
 bind-key -n F11 split-window -h
 bind-key -n F12 select-layout even-horizontal
 
-# Set status bar to top – I like to see my status bar on the top, this can be helpful when using VIM
+# Set status bar to top
 set-option -g status-position top
 
-# Tmux Plugin Manager ##############################
-# List of plugins
+# Tmux Plugin Manager
 set -g @plugin 'tmux-plugins/tpm'
-# Tmux nerd font window name: https://github.com/joshmedeski/tmux-nerd-font-window-name
 set -g @plugin 'joshmedeski/tmux-nerd-font-window-name'
-# Catpuccin Tmux theme: https://github.com/catppuccin/tmux
 set -g @plugin 'catppuccin/tmux'
-# Tmux Resurrect: https://github.com/tmux-plugins/tmux-resurrect
 set -g @plugin 'tmux-plugins/tmux-resurrect'
-# Tmux continuum: https://github.com/tmux-plugins/tmux-continuum
 set -g @plugin 'tmux-plugins/tmux-continuum'
 
-# Tmux continuum intervalsettings
+# Tmux continuum settings
 set -g @continuum-save-interval '15'
 set -g @continuum-restore 'on'
 
-# Catpuccin settings - Config 3
-set -g @catppuccin_window_left_separator ""
-set -g @catppuccin_window_right_separator " "
+# Catppuccin settings
+set -g @catppuccin_window_left_separator ""
+set -g @catppuccin_window_right_separator " "
 set -g @catppuccin_window_middle_separator " █"
 set -g @catppuccin_window_number_position "right"
 
@@ -219,8 +312,8 @@ set -g @catppuccin_window_current_fill "number"
 set -g @catppuccin_window_current_text "#W"
 
 set -g @catppuccin_status_modules_right "directory session"
-set -g @catppuccin_status_left_separator  " "
-set -g @catppuccin_status_right_separator ""
+set -g @catppuccin_status_left_separator  " "
+set -g @catppuccin_status_right_separator ""
 set -g @catppuccin_status_fill "icon"
 set -g @catppuccin_status_connect_separator "no"
 
@@ -230,85 +323,18 @@ set -g @catppuccin_directory_text "#{pane_current_path}"
 run '~/.tmux/plugins/tpm/tpm'
 ```
 
-### Key Binding Descriptions
+</details>
 
-- Shift+Left (S-Left): Move to the pane on the left.
-- Shift+Right (S-Right): Move to the pane on the right.
-- Shift+Up (S-Up): Move to the pane above.
-- Shift+Down (S-Down): Move to the pane below.
-- Ctrl+Left (C-Left): Move to the pane on the left.
-- Ctrl+Right (C-Right): Move to the pane on the right.
-- Ctrl+Up (C-Up): Move to the pane above.
-- Ctrl+Down (C-Down): Move to the pane below.
+## Why Tmux over Byobu?
 
-### F-Key Binding Descriptions
+1. **Stronger community** — Tmux has more documentation, guides, and community support
+2. **Direct control** — Byobu wraps tmux, which can complicate troubleshooting when your question is really a tmux question
+3. **Plugin ecosystem** — Vanilla tmux gives you full access to TPM and the plugin ecosystem without abstraction layers
 
-- F1: Rename the current window.
-- F2: Create a new window.
-- F3: Go to the previous window.
-- F4: Go to the next window.
-- F5: Refresh the client (redraw the screen).
-- F6: Detach from the current session.
-- F7: Display a tree of windows and panes.
-- F8: Swap the current window with another.
-- F9: Kill the current window.
-- F10: Split the current pane horizontally.
-- F11: Split the current pane vertically.
-- F12: Arrange panes in an even horizontal layout.
+**TL;DR:** Tmux is to Byobu as React is to Angular — more freedom, less opinion.
 
-## 🔌 Tmux Plugins
-
-Installing `tmux-plugins`
-
-```bash
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-```
-
-I like to use Catpuccin as my Tmux theme
-
-### Tmux nerd font window name
-
-Special icons for programming files
-Installation guide: https://github.com/joshmedeski/tmux-nerd-font-window-name
-
-### Tmux Theme Catpuccin
-
-Styling theme
-Installation guide: https://github.com/catppuccin/tmux
-
-### Catpuccin Requirements
-
-Catpuccin uses Nerd Fonts as their default font.
-You can download the Hack Nerd Font (or any other preferred Nerd Font) from the Nerd Fonts repository locally:
-via shell
-
-```bash
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip
-unzip Hack.zip -d ~/Library/Fonts/
-```
-
-or via Homebrew
-
-```bash
-brew tap homebrew/cask-fonts
-brew install --cask font-hack-nerd-font
-```
-
-After installing Nerd Fonts, make sure to set you iTerm Profile font to `Hack Nerd Font`
-
-## 🤔 Why not just use Byobu instead of Tmux?
-
-1. While Byobu is great out the box and can do everything Tmux can, I feel the documentation and community is not as strong as Tmux.
-2. In my experience whenever I think I have a "Byobu related question" it ends up being more of a "Tmux related question" and having Byobu as a wrapper can sometimes complicate the solution I'm looking for. At that point I might as well only be using Tmux.
-3. Byobu does abstract a lot from Tmux and makes thing simple, but it's simplicity also limits the use of plugins and customizations that you can get with "vanilla" Tmux.
-
-### TLDR;
-
-The Tmux and Byobu relationship is almost like a React vs Angular question. React gives you more freedom while Angular is great out the box but more opinionated on how things are executed.
-
-## 🔧 Default Tmux Configs
-
-If you ever need to reference or reset your tmux configs, this is the default `tmux.conf`
+<details>
+<summary><strong>Default tmux config (for reference/reset)</strong></summary>
 
 ```
 default-command ''
@@ -338,8 +364,6 @@ silence-action other
 status on
 status-bg default
 status-fg default
-status-format[0] "#[align=left range=left #{E:status-left-style}]#[push-default]#{T;=/#{status-left-length}:status-left}#[pop-default]#[norange default]#[list=on align=#{status-justify}]#[list=left-marker]<#[list=right-marker]>#[list=on]#{W:#[range=window|#{window_index} #{E:window-status-style}#{?#{&&:#{window_last_flag},#{!=:#{E:window-status-last-style},default}}, #{E:window-status-last-style},}#{?#{&&:#{window_bell_flag},#{!=:#{E:window-status-bell-style},default}}, #{E:window-status-bell-style},#{?#{&&:#{||:#{window_activity_flag},#{window_silence_flag}},#{!=:#{E:window-status-activity-style},default}}, #{E:window-status-activity-style},}}]#[push-default]#{T:window-status-format}#[pop-default]#[norange default]#{?window_end_flag,,#{window-status-separator}},#[range=window|#{window_index} list=focus #{?#{!=:#{E:window-status-current-style},default},#{E:window-status-current-style},#{E:window-status-style}}#{?#{&&:#{window_last_flag},#{!=:#{E:window-status-last-style},default}}, #{E:window-status-last-style},}#{?#{&&:#{window_bell_flag},#{!=:#{E:window-status-bell-style},default}}, #{E:window-status-bell-style},#{?#{&&:#{||:#{window_activity_flag},#{window_silence_flag}},#{!=:#{E:window-status-activity-style},default}}, #{E:window-status-activity-style},}}]#[push-default]#{T:window-status-current-format}#[pop-default]#[norange list=on default]#{?window_end_flag,,#{window-status-separator}}}#[nolist align=right range=right #{E:status-right-style}]#[push-default]#{T;=/#{status-right-length}:status-right}#[pop-default]#[norange default]"
-status-format[1] "#[align=centre]#{P:#{?pane_active,#[reverse],}#{pane_index}[#{pane_width}x#{pane_height}]#[default] }"
 status-interval 15
 status-justify left
 status-keys emacs
@@ -351,21 +375,14 @@ status-right "#{?window_bigger,[#{window_offset_x}#,#{window_offset_y}] ,}\"#{=2
 status-right-length 40
 status-right-style default
 status-style bg=green,fg=black
-update-environment[0] DISPLAY
-update-environment[1] KRB5CCNAME
-update-environment[2] SSH_ASKPASS
-update-environment[3] SSH_AUTH_SOCK
-update-environment[4] SSH_AGENT_PID
-update-environment[5] SSH_CONNECTION
-update-environment[6] WINDOWID
-update-environment[7] XAUTHORITY
 visual-activity off
 visual-bell off
 visual-silence off
-word-separators "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~"
 ```
 
-## 📚 References
+</details>
+
+## References
 
 - [Tmux Docs](https://github.com/tmux/tmux/wiki)
 - [Tmux Quick Guide](https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/)
