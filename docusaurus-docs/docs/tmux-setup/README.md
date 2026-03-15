@@ -288,11 +288,16 @@ bind-key -n F12 select-layout even-horizontal
 # Set status bar to top
 set-option -g status-position top
 
-# Tmux Plugin Manager
+# Tmux Plugin Manager ##############################
+# List of plugins
 set -g @plugin 'tmux-plugins/tpm'
+# Tmux nerd font window name: https://github.com/joshmedeski/tmux-nerd-font-window-name
 set -g @plugin 'joshmedeski/tmux-nerd-font-window-name'
+# Catppuccin Tmux theme: https://github.com/catppuccin/tmux
 set -g @plugin 'catppuccin/tmux'
+# Tmux Resurrect: https://github.com/tmux-plugins/tmux-resurrect
 set -g @plugin 'tmux-plugins/tmux-resurrect'
+# Tmux continuum: https://github.com/tmux-plugins/tmux-continuum
 set -g @plugin 'tmux-plugins/tmux-continuum'
 
 # Tmux continuum settings
