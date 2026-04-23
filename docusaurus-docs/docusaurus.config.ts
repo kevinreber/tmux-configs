@@ -6,7 +6,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "Kevin Reber Developer Setup",
-  tagline: "👨‍💻 My personal developer setup",
+  tagline: "A fully configured tmux environment with Byobu-style keybindings, session persistence, and Catppuccin theming.",
   favicon: "img/favicon.ico",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
