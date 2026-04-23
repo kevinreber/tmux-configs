@@ -1,0 +1,9 @@
+{
+  "displayName": "Tmux Configs",
+  "description": "Custom tmux configuration with 50+ keybindings inspired by Byobu. Features Caps Lock remapped to Ctrl+a prefix, intuitive pane navigation, Catppuccin theme, and session persistence.",
+  "tech": ["tmux", "Shell", "Catppuccin", "Nerd Fonts"],
+  "thumbnail": "docs/images/thumbnail.png",
+  "demo": "docs/images/demo.gif",
+  "liveUrl": "https://kevinreber.github.io/tmux-configs/docs/tmux-setup",
+  "order": 7
+}
